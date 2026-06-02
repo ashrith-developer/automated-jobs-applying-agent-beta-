@@ -1,0 +1,126 @@
+{
+  "personal": {
+    "first_name": "Woonna Venkat",
+    "last_name": "Ashrith",
+    "email": "woonnaashrith@gmail.com",
+    "phone": "+91 9441211151",
+    "location": "Visakhapatnam, Andhra Pradesh, India",
+    "website": "",
+    "linkedin": "https://linkedin.com/in/ashrith-venkat-995956034",
+    "github": "https://github.com/ashrith-developer",
+    "portfolio": "",
+    "citizenship": "India",
+    "work_authorization": "",
+    "requires_sponsorship": "No"
+  },
+  "education": [
+    {
+      "school": "Amrita Vishwa Vidyapeetham, Amritapuri",
+      "degree": "B.Tech",
+      "major": "Artificial Intelligence and Data Science",
+      "gpa": "8.66",
+      "start_date": "2023",
+      "end_date": "2027"
+    },
+    {
+      "school": "Fiitjee Junior College, Visakhapatnam",
+      "degree": "Higher Secondary Certificate",
+      "major": "PCM",
+      "gpa": "83.6%",
+      "start_date": "2021",
+      "end_date": "2023"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Academic Projects",
+      "title": "AI & Deep Learning Developer",
+      "location": "Amritapuri, India",
+      "start_date": "January 2025",
+      "end_date": "Present",
+      "description": "Developed a patient-aware deep learning framework for binary Alzheimer's disease classification using MRI scans from the OASIS dataset. Enhanced EfficientNetV2-S using Squeeze-and-Excitation attention, GeM pooling, and an MLP-based classification head for improved feature representation. Implemented GroupKFold cross-validation, Mixup/CutMix augmentation, and Grad-CAM interpretability to improve robustness and clinical relevance."
+    },
+    {
+      "company": "Academic Projects",
+      "title": "RAG & NLP System Architect",
+      "location": "Amritapuri, India",
+      "start_date": "August 2024",
+      "end_date": "December 2024",
+      "description": "Built a Retrieval-Augmented Generation (RAG) pipeline using semantic vector retrieval for context-aware question answering. Generated dense embeddings using Sentence Transformers and stored them in a FAISS vector database for efficient similarity search. Integrated retrieved contextual information with LLM prompting to improve answer grounding and reduce hallucinations."
+    },
+    {
+      "company": "Personal Projects",
+      "title": "Automation & NLP Developer",
+      "location": "Visakhapatnam, India",
+      "start_date": "May 2024",
+      "end_date": "July 2024",
+      "description": "Developed an automated pipeline to scrape job postings and extract skill-related information using BeautifulSoup and NLP techniques. Generated embeddings and stored them in a FAISS vector database to enable semantic similarity search and personalized email generation. Reduced manual outreach effort by over 60% through automated cold email workflows."
+    }
+  ],
+  "skills": [
+    "Python",
+    "Java",
+    "MATLAB",
+    "Machine Learning",
+    "Deep Learning",
+    "NLP",
+    "ANNs",
+    "Agentic AI",
+    "PyTorch",
+    "TensorFlow",
+    "Scikit-learn",
+    "NumPy",
+    "Pandas",
+    "SciPy",
+    "LangChain",
+    "Transformers",
+    "RAG",
+    "FAISS",
+    "Vector Databases",
+    "Flask",
+    "REST APIs",
+    "PostgreSQL",
+    "Docker",
+    "Kubernetes"
+  ],
+  "standard_qa": {
+    "desired_salary": "900,000 INR",
+    "notice_period": "None",
+    "gender": "Male",
+    "race": "Asian",
+    "disability": "No, I do not have a disability",
+    "veteran": "No, I am not a veteran",
+    "will_relocate": "Yes",
+    "years_experience": "0"
+  },
+  "settings": {
+    "resume_name": "resume (4).pdf",
+    "gemini_api_key": "",
+    "auto_submit": true,
+    "headless": false,
+    "max_applications": 25,
+    "search_keywords": [
+      "AI Engineer",
+      "Data Analyst",
+      "Machine Learning Engineer",
+      "Python Developer",
+      "Data Scientist",
+      "Software Engineer",
+      "AI Engineer Intern",
+      "Data Analyst Intern",
+      "Data Science Intern",
+      "Machine Learning Intern"
+    ],
+    "search_locations": [
+      "India",
+      "Bengaluru",
+      "Hyderabad",
+      "Remote",
+      "Mumbai",
+      "Pune",
+      "Gurugram",
+      "Noida",
+      "Chennai"
+    ]
+  }
+}

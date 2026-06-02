@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobFlow AI | Automated Career Agent</title>
+    <!-- Google Fonts: Outfit & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- JavaScript Error Self-Reporting Banner -->
+    <div id="js-error-banner" style="display:none; background: rgba(239, 68, 68, 0.95); border: 2px solid #ef4444; color: white; padding: 20px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; border-radius: 12px; font-family: sans-serif; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4); max-width: 90%; width: 500px;">
+        <h4 style="margin: 0 0 8px 0; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-triangle-exclamation"></i> JavaScript Exception Detected</h4>
+        <pre id="js-error-text" style="margin: 0; white-space: pre-wrap; font-family: monospace; font-size: 13px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);"></pre>
+        <button onclick="document.getElementById('js-error-banner').style.display='none'" style="margin-top: 12px; background: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; color: #ef4444; cursor: pointer; float: right;">Dismiss</button>
+    </div>
+    <script>
+        window.addEventListener('error', function(e) {
+            document.getElementById('js-error-text').textContent = e.message + '\nat ' + e.filename + ':' + e.lineno + ':' + e.colno;
+            document.getElementById('js-error-banner').style.display = 'block';
+        });
+    </script>
+
+    <div class="app-container">
+        <!-- Glowing background blobs -->
+        <div class="glow-bg-1"></div>
+        <div class="glow-bg-2"></div>
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fa-solid fa-robot"></i></div>
+                <div class="logo-text">JobFlow<span>AI</span></div>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="profile">
+                    <i class="fa-solid fa-id-card"></i> <span>Profile Details</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="resume-ai">
+                    <i class="fa-solid fa-file-pdf"></i> <span>Resume & AI</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="search-config">
+                    <i class="fa-solid fa-sliders"></i> <span>Search Engine</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="history">
+                    <i class="fa-solid fa-history"></i> <span>Applications</span>
+                </a>
+            </nav>
+            
+            <div class="agent-status-panel">
+                <div class="status-indicator idle" id="side-status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Agent Idle</span>
+                </div>
+                <button class="btn btn-primary" id="btn-side-toggle"><i class="fa-solid fa-play"></i> Start Agent</button>
+            </div>
+        </aside>
+
+        <!-- Main Body -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="welcome-msg">
+                    <h1>Automate Your Career Search</h1>
+                    <p>JobFlow AI is monitoring, searching, and auto-applying to internships and jobs.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="live-pulse hidden" id="live-pulse">
+                        <span class="pulse-ring"></span>
+                        <span class="pulse-text">Agent Active</span>
+                    </div>
+                    <div class="profile-preview">
+                        <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
+                        <span id="user-display-name">Candidate</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area (Tabs) -->
+            <div class="tab-content">
+                
+                <!-- ================= TAB: DASHBOARD ================= -->
+                <section class="tab-pane active" id="dashboard-tab">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon applied"><i class="fa-solid fa-paper-plane"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Total Applied</span>
+                                <h2 class="stat-value" id="stat-applied">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon rate"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Success Rate</span>
+                                <h2 class="stat-value" id="stat-rate">0%</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon failed"><i class="fa-solid fa-circle-xmark"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Failed Applications</span>
+                                <h2 class="stat-value" id="stat-failed">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon draft"><i class="fa-solid fa-file-invoice"></i></div>
+                            <div class="stat-details">
+                                <span class="stat-label">Saved Drafts</span>
+                                <h2 class="stat-value" id="stat-drafts">0</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Dashboard Split -->
+                    <div class="dashboard-split">
+                        <!-- Left: Glowing Terminal logs -->
+                        <div class="glass-card terminal-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-terminal"></i> Agent Console Log</h3>
+                                <div class="terminal-controls">
+                                    <button class="btn btn-icon" id="clear-console" title="Clear Console"><i class="fa-solid fa-trash-can"></i></button>
+                                    <span class="control-dot red"></span>
+                                    <span class="control-dot yellow"></span>
+                                    <span class="control-dot green"></span>
+                                </div>
+                            </div>
+                            <div class="terminal-body" id="console-logs">
+                                <div class="log-line system">[SYSTEM] JobFlow Agent initialized. Waiting for instruction...</div>
+                                <div class="log-line system">[SYSTEM] Note: Browser persistent session active. First-run headed mode recommended for manual login.</div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Live view & controller -->
+                        <div class="glass-card live-view-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-eye"></i> Browser Viewport</h3>
+                                <span class="badge" id="viewport-status">Inactive</span>
+                            </div>
+                            <div class="viewport-body" id="viewport-container">
+                                <div class="viewport-placeholder" id="viewport-placeholder">
+                                    <i class="fa-solid fa-compass-drafting"></i>
+                                    <p>Agent is offline.</p>
+                                    <span>Launch the agent to view interactive browser screenshots and form-filling steps here.</span>
+                                </div>
+                                <img src="" alt="Live Application Step" class="viewport-image hidden" id="viewport-image">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB: PROFILE ================= -->
+                <section class="tab-pane" id="profile-tab">
+                    <form id="profile-form">
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-user"></i> Personal & Work Authorization</h3>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" name="personal.first_name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" name="personal.last_name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" name="personal.email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" name="personal.phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location (City, State)</label>
+                                    <input type="text" name="personal.location" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>LinkedIn URL</label>
+                                    <input type="url" name="personal.linkedin">
+                                </div>
+                                <div class="form-group">
+                                    <label>GitHub URL</label>
+                                    <input type="url" name="personal.github">
+                                </div>
+                                <div class="form-group">
+                                    <label>Portfolio Website</label>
+                                    <input type="url" name="personal.portfolio">
+                                </div>
+                                <div class="form-group">
+                                    <label>Citizenship</label>
+                                    <input type="text" name="personal.citizenship" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>US Work Authorization Status</label>
+                                    <select name="personal.work_authorization">
+                                        <option value="Authorized to work in the US">Authorized to work in the US</option>
+                                        <option value="Not authorized to work in the US">Not authorized to work in the US</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Will you now or in the future require sponsorship?</label>
+                                    <select name="personal.requires_sponsorship">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Standard QA Details -->
+                        <div class="glass-card spacer-top">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-question-circle"></i> Standard Screening Q&As</h3>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Desired Annual Salary ($)</label>
+                                    <input type="text" name="standard_qa.desired_salary" placeholder="e.g. 100,000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Notice Period</label>
+                                    <input type="text" name="standard_qa.notice_period" placeholder="e.g. Immediate">
+                                </div>
+                                <div class="form-group">
+                                    <label>Total Years of Work Experience</label>
+                                    <input type="text" name="standard_qa.years_experience" placeholder="e.g. 2">
+                                </div>
+                                <div class="form-group">
+                                    <label>Willing to Relocate?</label>
+                                    <select name="standard_qa.will_relocate">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Demographic Gender Option</label>
+                                    <input type="text" name="standard_qa.gender" placeholder="e.g. Male / Decline to Self-Identify">
+                                </div>
+                                <div class="form-group">
+                                    <label>Demographic Race Option</label>
+                                    <input type="text" name="standard_qa.race" placeholder="e.g. Asian / Decline to Self-Identify">
+                                </div>
+                                <div class="form-group">
+                                    <label>Demographic Disability Option</label>
+                                    <input type="text" name="standard_qa.disability" placeholder="e.g. No, I do not have a disability">
+                                </div>
+                                <div class="form-group">
+                                    <label>Demographic Veteran Option</label>
+                                    <input type="text" name="standard_qa.veteran" placeholder="e.g. No, I am not a veteran">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Footer Actions -->
+                        <div class="form-actions-bar">
+                            <span class="status-msg" id="profile-status-msg"></span>
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-save"></i> Save Profile Details</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- ================= TAB: RESUME & AI ================= -->
+                <section class="tab-pane" id="resume-ai-tab">
+                    <div class="dashboard-split">
+                        <!-- Left: File Uploader -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-cloud-arrow-up"></i> Upload Resume File</h3>
+                            </div>
+                            <div class="upload-dropzone" id="resume-dropzone">
+                                <i class="fa-solid fa-file-arrow-up"></i>
+                                <h4>Drag & drop your resume here</h4>
+                                <p>Supports .PDF, .DOCX, and .TXT formats</p>
+                                <input type="file" id="resume-file-input" class="hidden" accept=".pdf,.docx,.txt">
+                                <button class="btn btn-secondary btn-sm" id="btn-trigger-upload">Select File</button>
+                            </div>
+                            <div class="active-file-card hidden" id="active-file-display">
+                                <div class="file-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                                <div class="file-details">
+                                    <h4 id="uploaded-file-name">resume.pdf</h4>
+                                    <span class="success-badge"><i class="fa-solid fa-circle-check"></i> Loaded & Active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Gemini Settings -->
+                        <div class="glass-card">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-bolt"></i> Gemini AI Configuration</h3>
+                                <span class="badge badge-ai"><i class="fa-solid fa-wand-magic-sparkles"></i> Free-Tier (gemini-1.5-flash)</span>
+                            </div>
+                            <div class="ai-config-form">
+                                <div class="form-group">
+                                    <label>Gemini API Key</label>
+                                    <div class="api-key-input-container">
+                                        <input type="password" id="gemini-api-key-input" placeholder="Paste your AI Studio API Key here...">
+                                        <button class="btn-toggle-visibility" id="toggle-key-visible"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
+                                    <span class="help-text">Your API Key is saved locally on your computer in `profile.json` and is never sent to third-party servers except for Google AI Studio. You can get a free key from <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Automation Mode</label>
+                                    <div class="toggle-switch-container">
+                                        <span class="toggle-label">Automatic Form Submissions</span>
+                                        <label class="switch">
+                                            <input type="checkbox" id="toggle-auto-submit" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <span class="help-text"><strong>Enabled (Recommended)</strong>: The agent will fill out and automatically click "Submit Application".<br><strong>Disabled (Draft mode)</strong>: The agent will fill the application fields, generate a cover letter, save it as a Draft, and skip to the next.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Headed Session Mode</label>
+                                    <div class="toggle-switch-container">
+                                        <span class="toggle-label">Show Browser Window (Headed)</span>
+                                        <label class="switch">
+                                            <input type="checkbox" id="toggle-headless">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <span class="help-text">Keep this turned **ON** (unchecked box) for headed session reuse. It opens a browser window so you can watch the agent apply or log into LinkedIn manually on the first run.</span>
+                                </div>
+                                <button class="btn btn-primary" id="btn-save-ai-settings"><i class="fa-solid fa-save"></i> Save AI Engine Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB: SEARCH CONFIG ================= -->
+                <section class="tab-pane" id="search-config-tab">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-binoculars"></i> Search Parameters</h3>
+                        </div>
+                        <div class="search-config-grid">
+                            <!-- Left: Keywords -->
+                            <div class="keyword-manager">
+                                <h4>Target Job Keywords</h4>
+                                <div class="input-add-container">
+                                    <input type="text" id="new-keyword-input" placeholder="e.g. React Developer, Software Engineer Intern">
+                                    <button class="btn btn-secondary" id="btn-add-keyword"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                                <ul class="tag-list" id="keyword-list">
+                                    <!-- Dynamic -->
+                                </ul>
+                            </div>
+
+                            <!-- Right: Locations -->
+                            <div class="location-manager">
+                                <h4>Target Job Locations</h4>
+                                <div class="input-add-container">
+                                    <input type="text" id="new-location-input" placeholder="e.g. Remote, San Francisco, Dallas, TX">
+                                    <button class="btn btn-secondary" id="btn-add-location"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                                <ul class="tag-list" id="location-list">
+                                    <!-- Dynamic -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Slider limit -->
+                        <div class="limit-config-row">
+                            <div class="form-group limit-input-group">
+                                <label>Daily Applications Cap: <span id="max-apps-val">20</span></label>
+                                <input type="range" id="max-applications-range" min="1" max="100" value="20" class="styled-range">
+                            </div>
+                            <span class="help-text limit-notice">Limiting daily applications prevents account flagged behaviors. We recommend keeping it between 10-25 applications per day.</span>
+                        </div>
+
+                        <!-- Save -->
+                        <div class="form-actions-bar spacer-top">
+                            <span class="status-msg" id="search-config-status-msg"></span>
+                            <button class="btn btn-success" id="btn-save-search-config"><i class="fa-solid fa-save"></i> Save Search Targets</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB: HISTORY ================= -->
+                <section class="tab-pane" id="history-tab">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-list-check"></i> Applied Jobs History</h3>
+                            <button class="btn btn-secondary btn-sm" id="btn-refresh-history"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date Applied</th>
+                                        <th>Position</th>
+                                        <th>Company</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Outreach / Letter</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-table-body">
+                                    <!-- Dynamic Rows -->
+                                    <tr>
+                                        <td colspan="7" class="loading-placeholder">Loading history database...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Glass Modal for Diagnostic Logs -->
+    <div class="modal hidden" id="log-modal">
+        <div class="modal-overlay" id="close-modal-overlay"></div>
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Job Application Logs</h3>
+                <button class="btn-close-modal" id="btn-close-modal"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="terminal-body log-modal-console" id="modal-log-content">
+                    <!-- Logs injection -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Core JavaScript -->
+    <script src="/static/app.js"></script>
+</body>
+</html>

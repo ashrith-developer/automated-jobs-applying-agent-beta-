@@ -1,0 +1,47 @@
+====================================================================
+                     WOONNA VENKAT ASHRITH
+Visakhapatnam, AP, India | +91 9441211151 | woonnaashrith@gmail.com
+LinkedIn: linkedin.com/in/ashrith-venkat-995956034
+GitHub: github.com/ashrith-developer
+====================================================================
+
+SUMMARY
+Artificial Intelligence and Data Science undergraduate with hands-on experience in machine learning, deep learning, NLP, and LLM-based systems. Skilled in developing AI applications using PyTorch, Scikit-learn, FAISS, and LangChain, with experience in semantic retrieval, medical imaging, and intelligent automation pipelines.
+
+EDUCATION
+Amrita Vishwa Vidyapeetham, Amritapuri (Kerala, India)
+B.Tech in Artificial Intelligence and Data Science (CGPA: 8.66) | 2023 - 2027
+
+Fiitjee Junior College, Visakhapatnam (Andhra Pradesh, India)
+Higher Secondary Certificate (83.6%) | 2021 - 2023
+
+PROJECTS
+Alzheimer's Disease Detection using Deep Learning | PyTorch, EfficientNetV2-S, Medical Imaging (2025)
+- Developed a patient-aware deep learning framework for binary Alzheimer's disease classification using MRI scans from the OASIS dataset.
+- Enhanced EfficientNetV2-S using Squeeze-and-Excitation attention, GeM pooling, and an MLP-based classification head for improved feature representation.
+- Implemented GroupKFold cross-validation, Mixup/CutMix augmentation, and Grad-CAM interpretability to improve robustness and clinical relevance.
+
+TG-RAG: Retrieval-Augmented Generation System | NLP, FAISS, Sentence Transformers, LLMs (2025)
+- Built a Retrieval-Augmented Generation (RAG) pipeline using semantic vector retrieval for context-aware question answering.
+- Generated dense embeddings using Sentence Transformers and stored them in a FAISS vector database for efficient similarity search.
+- Integrated retrieved contextual information with LLM prompting to improve answer grounding and reduce hallucinations.
+
+Cold Email Agent | Python, NLP, FAISS, Automation (2024)
+- Developed an automated pipeline to scrape job postings and extract skill-related information using BeautifulSoup and NLP techniques.
+- Generated embeddings and stored them in a FAISS vector database to enable semantic similarity search and personalized email generation.
+- Reduced manual outreach effort by over 60% through automated cold email workflows.
+
+TECHNICAL SKILLS
+- Programming Languages: Python, Java, MATLAB
+- Machine Learning & AI: Machine Learning, Deep Learning, NLP, ANNs, Agentic AI
+- Frameworks & Libraries: PyTorch, TensorFlow, Scikit-learn, NumPy, Pandas, SciPy
+- LLM & NLP Tools: LangChain, Transformers, RAG, FAISS, Vector Databases
+- Backend & Tools: Flask, REST APIs, PostgreSQL, Docker, Kubernetes
+
+ACHIEVEMENTS
+Urban Vision AI Hackathon 2025 - Top 20 Teams (June 2025)
+- IISc Bengaluru - IIT Jammu - ACM - IEEE India Council
+- Selected among the Top 20 teams in Urban Vision AI Hackathon 2025 for proposing an AI-driven solution focused on urban mobility.
+
+LANGUAGES
+English, Hindi, Telugu

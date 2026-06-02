@@ -1,0 +1,23 @@
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Database
+*.db
+jobflow.db
+
+# Sensitive / User Session Data
+cookies.json
+user_data/
+
+# Temporary / Scratch
+scratch/
