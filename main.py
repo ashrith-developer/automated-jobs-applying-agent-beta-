@@ -91,7 +91,12 @@ def load_profile_data() -> dict:
     if not os.path.exists(PROFILE_PATH):
         raise HTTPException(status_code=404, detail="Profile configuration not found.")
     with open(PROFILE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    if "settings" not in data:
+        data["settings"] = {}
+    if not data["settings"].get("gemini_api_key"):
+        data["settings"]["gemini_api_key"] = os.environ.get("GEMINI_API_KEY", "")
+    return data
 
 def save_profile_data(data: dict):
     with open(PROFILE_PATH, "w", encoding="utf-8") as f:
