@@ -1,3 +1,4 @@
+import os
 import sys
 import asyncio
 from dotenv import load_dotenv
@@ -13,7 +14,10 @@ import uvicorn
 
 
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 8000))
+    host = os.environ.get("HOST", "0.0.0.0")
     print("===================================================")
-    print("       Starting JobFlow AI with Proactor Loop      ")
+    print(f"       Starting JobFlow AI on {host}:{port}        ")
     print("===================================================")
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=False)
+    uvicorn.run("main:app", host=host, port=port, reload=False)
+

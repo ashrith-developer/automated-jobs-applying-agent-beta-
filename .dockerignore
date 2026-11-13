@@ -1,0 +1,16 @@
+.git
+.github
+.venv
+venv
+env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+jobflow.db
+user_data/
+scratch/
+.pytest_cache
+*.log
+

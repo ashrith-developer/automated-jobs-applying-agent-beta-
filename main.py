@@ -12,15 +12,47 @@ if sys.platform == 'win32':
 import os
 import json
 import shutil
+import base64
+import secrets
 from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, UploadFile, File, BackgroundTasks, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse, FileResponse
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
 from pydantic import BaseModel
 import database
 from agent import JobFlowAgent
 
 app = FastAPI(title="JobFlow AI API")
+
+# Optional HTTP Basic Auth for cloud deployments (e.g. Render)
+class OptionalBasicAuthMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        expected_user = os.environ.get("DASHBOARD_USERNAME")
+        expected_pass = os.environ.get("DASHBOARD_PASSWORD")
+        
+        # If no credentials configured in environment, allow open access
+        if not expected_user or not expected_pass:
+            return await call_next(request)
+            
+        auth = request.headers.get("Authorization")
+        if auth and auth.startswith("Basic "):
+            try:
+                decoded = base64.b64decode(auth[6:]).decode("utf-8")
+                user, pwd = decoded.split(":", 1)
+                if secrets.compare_digest(user, expected_user) and secrets.compare_digest(pwd, expected_pass):
+                    return await call_next(request)
+            except Exception:
+                pass
+                
+        return Response(
+            status_code=401,
+            headers={"WWW-Authenticate": 'Basic realm="JobFlow AI Dashboard"'},
+            content="Authentication Required\n"
+        )
+
+app.add_middleware(OptionalBasicAuthMiddleware)
 
 # File locations
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

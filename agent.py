@@ -310,26 +310,44 @@ class JobFlowAgent:
         async with async_playwright() as p:
             await self.log("Starting JobFlow Browser Session...")
             
-            headless = self.profile.get("settings", {}).get("headless", False)
+            is_linux = sys.platform.startswith("linux")
+            headless = True if is_linux else self.profile.get("settings", {}).get("headless", False)
             
             # Determine User Agent: Only override if running headless to prevent version spoofing discrepancies in headful mode
             ua_param = None
             if headless:
                 ua_param = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0"
             
-            # Launch standard non-persistent Edge browser (100% lock-free, zero folder-locking bugs!)
-            browser = await p.chromium.launch(
-                headless=headless,
-                channel="msedge",
-                args=[
-                    "--disable-blink-features=AutomationControlled",
-                    "--no-first-run",
-                    "--no-service-autorun",
-                    "--password-store=basic",
-                    "--use-mock-keychain",
-                    "--disable-features=EdgeSidebar,EdgeWallet,EdgeSearchCustomization,EdgeHubArea,EdgeInfluencerCard,EdgeSmartScreen"
-                ]
-            )
+            browser_args = [
+                "--disable-blink-features=AutomationControlled",
+                "--no-first-run",
+                "--no-service-autorun",
+                "--password-store=basic",
+                "--use-mock-keychain",
+                "--disable-features=EdgeSidebar,EdgeWallet,EdgeSearchCustomization,EdgeHubArea,EdgeInfluencerCard,EdgeSmartScreen"
+            ]
+            if is_linux:
+                browser_args.extend(["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"])
+
+            # On Windows try Edge first, on Linux/Docker use standard Chromium
+            try:
+                if not is_linux:
+                    browser = await p.chromium.launch(
+                        headless=headless,
+                        channel="msedge",
+                        args=browser_args
+                    )
+                else:
+                    browser = await p.chromium.launch(
+                        headless=headless,
+                        args=browser_args
+                    )
+            except Exception as launch_err:
+                await self.log(f"⚠️ Falling back to default Chromium browser: {launch_err}")
+                browser = await p.chromium.launch(
+                    headless=headless,
+                    args=browser_args
+                )
             
             context = await browser.new_context(
                 viewport={"width": 1280, "height": 800},
