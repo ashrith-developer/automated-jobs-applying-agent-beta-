@@ -822,8 +822,13 @@ class JobFlowAgent:
                     if not radio_clicked and len(radios) > 0:
                         # Click the first option by default
                         r_id = await radios[0].get_attribute("id")
-                        await record_log(f"🔘 Fallback selecting radio '{legend_text}' -> '{await fs.locator(f'label[for=\"{r_id}\"]').inner_text()}'")
-                        await fs.locator(f"label[for='{r_id}']").click()
+                        first_label_selector = f"label[for='{r_id}']"
+                        try:
+                            first_label_text = await fs.locator(first_label_selector).inner_text()
+                        except Exception:
+                            first_label_text = ""
+                        await record_log(f"🔘 Fallback selecting radio '{legend_text}' -> '{first_label_text}'")
+                        await fs.locator(first_label_selector).click()
                     await self.sleep_human_like(0.5, 1.2)
                 except Exception as fs_err:
                     await record_log(f"⚠️ Radio fieldset error: {fs_err}")
